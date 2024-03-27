@@ -3,6 +3,8 @@ let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
+const axios = require("axios").default;
+const baseURL = "http://localhost:5000";
 
 public_users.post("/register", (req, res) => {
   const username = req.body.username;
@@ -55,5 +57,28 @@ public_users.get("/review/:isbn", function (req, res) {
   const reviews = books[isbn].reviews;
   return res.status(200).json({ [isbn]: { reviews } });
 });
+
+// Get the book list available in the shop with axios
+const getBooks = () => {
+  axios
+    .get(`${baseURL}/`)
+    .then((response) => response)
+    .catch((error) => console.log(error));
+};
+
+// Get book details based on ISBN with axios
+const getBookForIsbn = async function (isbn) {
+  return await axios.get(`${baseURL}/isbn/${isbn}`);
+};
+
+// Get book details based on author with axios
+const getBookOfAuthor = async function (author) {
+  return await axios.get(`${baseURL}/author/${author}`);
+};
+
+// Get all books based on title with axios
+const getBookWithTitle = async function (title) {
+  return await axios.get(`${baseURL}/title/${title}`);
+};
 
 module.exports.general = public_users;
