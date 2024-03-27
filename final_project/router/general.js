@@ -59,26 +59,32 @@ public_users.get("/review/:isbn", function (req, res) {
 });
 
 // Get the book list available in the shop with axios
-const getBooks = () => {
+public_users.get("/books", function (req, res) {
   axios
     .get(`${baseURL}/`)
-    .then((response) => response)
+    .then((response) => res.status(response.status).send(response.data))
     .catch((error) => console.log(error));
-};
+});
 
 // Get book details based on ISBN with axios
-const getBookForIsbn = async function (isbn) {
-  return await axios.get(`${baseURL}/isbn/${isbn}`);
-};
+public_users.get("/books/isbn/:isbn", async function (req, res) {
+  const isbn = req.params.isbn;
+  const response = await axios.get(`${baseURL}/isbn/${isbn}`);
+  return res.status(response.status).send(response.data);
+});
 
 // Get book details based on author with axios
-const getBookOfAuthor = async function (author) {
-  return await axios.get(`${baseURL}/author/${author}`);
-};
+public_users.get("/books/author/:author", async function (req, res) {
+  const author = req.params.author;
+  const response = await axios.get(`${baseURL}/author/${author}`);
+  return res.status(response.status).send(response.data);
+});
 
 // Get all books based on title with axios
-const getBookWithTitle = async function (title) {
-  return await axios.get(`${baseURL}/title/${title}`);
-};
+public_users.get("/books/title/:title", async function (req, res) {
+  const title = req.params.title;
+  const response = await axios.get(`${baseURL}/title/${title}`);
+  return res.status(response.status).send(response.data);
+});
 
 module.exports.general = public_users;
